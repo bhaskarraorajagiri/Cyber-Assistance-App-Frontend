@@ -1,65 +1,87 @@
 import { useState } from "react";
 import PasswordStrengthBar from "../components/password/PasswordStrengthBar";
 import PasswordFeedback from "../components/password/PasswordFeedback";
+import { checkPassword } from "../services/securityService";
 import "../styles/password.css";
 
 export default function Password() {
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<any>(null);
 
   const handleAnalyze = async () => {
     if (!password) return;
-    setLoading(true);
 
-    // TEMP: mock result (replace with API call later)
-    setTimeout(() => {
-      setResult({
-        score: 62,
-        strength: "Medium",
-        pwnedCount: 53,
-        issues: [
-          "Password is reused",
-          "No special characters",
-        ],
-        suggestions: [
-          "Add symbols like !@#$",
-          "Use a password manager",
-        ],
-      });
+    setLoading(true);
+    setError(null);
+    setResult(null);
+
+    try {
+      const data = await checkPassword(password);
+      setResult(data);
+    } catch (err: any) {
+      setError(err.message || "Unable to analyze password");
+    } finally {
       setLoading(false);
-    }, 800);
+    }
   };
 
   return (
     <div className="password-page">
       <h1>Password Safety</h1>
       <p className="subtitle">
-        Analyze password strength and check if it has appeared in data breaches.
+        Analyze password strength and check if it has appeared in known data breaches.
       </p>
 
       <div className="password-box">
-        <input
-          type="password"
-          placeholder="Enter password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="password-input-wrapper">
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Enter password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <span
+            className="toggle-visibility"
+            onClick={() => setShowPassword((prev) => !prev)}
+            role="button"
+            aria-label={showPassword ? "Hide password" : "Show password"}
+          >
+            {showPassword ? "🙈" : "👁️"}
+          </span>
+        </div>
+
 
         <button onClick={handleAnalyze} disabled={loading}>
           {loading ? "Analyzing..." : "Analyze Password"}
         </button>
       </div>
 
+      {error && (
+        <div className="rate-limit">
+          ⚠️ {error}
+        </div>
+      )}
+
+
       {result && (
         <>
-          <PasswordStrengthBar score={result.score} />
-          <PasswordFeedback data={result} />
+          <PasswordStrengthBar score={result.local.score} />
+          <PasswordFeedback
+            data={{
+              pwnedCount: result.pwnedCount,
+              issues: result.local.issues,
+              suggestions: result.local.suggestions,
+            }}
+          />
         </>
       )}
 
       <p className="privacy-note">
-        🔒 Passwords are analyzed locally and never stored.
+        🔒 Passwords are analyzed securely and never stored.
       </p>
     </div>
   );

@@ -1,5 +1,5 @@
 type Props = {
-  score: number; // 0–100
+  score: number;
 };
 
 export default function PasswordStrengthBar({ score }: Props) {

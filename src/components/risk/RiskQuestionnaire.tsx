@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { checkRiskScore } from "../../services/securityService";
 
 type Props = {
   onResult: (data: any) => void;
@@ -12,20 +13,21 @@ export default function RiskQuestionnaire({ onResult }: Props) {
     updateSoftware: true,
   });
 
-  const handleSubmit = () => {
-    // TEMP mock result (replace with API later)
-    onResult({
-      score: 58,
-      level: "Medium",
-      issues: [
-        "You reuse passwords across accounts",
-        "2FA is not enabled everywhere",
-      ],
-      recommendations: [
-        "Use a password manager",
-        "Enable 2FA on all important accounts",
-      ],
-    });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const data = await checkRiskScore(answers);
+      onResult(data);
+    } catch (err: any) {
+      setError(err.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -45,17 +47,27 @@ export default function RiskQuestionnaire({ onResult }: Props) {
       <Question
         label="Do you install apps from unknown or untrusted sources?"
         value={answers.installRandomApps}
-        onChange={(v) => setAnswers({ ...answers, installRandomApps: v })}
+        onChange={(v) =>
+          setAnswers({ ...answers, installRandomApps: v })
+        }
       />
 
       <Question
-        label="Do you regularly update your operating system and apps?"
+        label="Do you regularly update your OS and applications?"
         value={answers.updateSoftware}
-        onChange={(v) => setAnswers({ ...answers, updateSoftware: v })}
+        onChange={(v) =>
+          setAnswers({ ...answers, updateSoftware: v })
+        }
       />
 
-      <button className="analyze-btn" onClick={handleSubmit}>
-        Calculate Risk Score
+      {error && <p className="danger">{error}</p>}
+
+      <button
+        className="analyze-btn"
+        onClick={handleSubmit}
+        disabled={loading}
+      >
+        {loading ? "Calculating..." : "Calculate Risk Score"}
       </button>
     </div>
   );

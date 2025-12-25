@@ -1,22 +1,32 @@
 type Props = {
   data: {
-    risk: "Low" | "Medium" | "High";
+    riskScore: number;
+    riskLevel: "Low" | "Medium" | "High";
     reasons: string[];
-    recommendation: string;
+    suggestions: string[];
+    normalizedUrl?: string;
+    extractedDomain?: string;
   };
 };
 
 export default function PhishingResult({ data }: Props) {
   let color = "var(--accent)";
-  if (data.risk === "Medium") color = "var(--warning)";
-  if (data.risk === "High") color = "var(--danger)";
+  if (data.riskLevel === "Medium") color = "var(--warning)";
+  if (data.riskLevel === "High") color = "var(--danger)";
 
   return (
     <div className="phishing-result">
       <h3>
         Risk Level:{" "}
-        <span style={{ color }}>{data.risk}</span>
+        <span style={{ color }}>{data.riskLevel}</span>{" "}
+        ({data.riskScore}/100)
       </h3>
+
+      {data.extractedDomain && (
+        <p>
+          <strong>Domain:</strong> {data.extractedDomain}
+        </p>
+      )}
 
       <h4>Why this is risky</h4>
       <ul>
@@ -25,9 +35,12 @@ export default function PhishingResult({ data }: Props) {
         ))}
       </ul>
 
-      <p className="recommendation">
-        👉 {data.recommendation}
-      </p>
+      <h4>Safety Suggestions</h4>
+      <ul>
+        {data.suggestions.map((tip, i) => (
+          <li key={i}>{tip}</li>
+        ))}
+      </ul>
     </div>
   );
 }

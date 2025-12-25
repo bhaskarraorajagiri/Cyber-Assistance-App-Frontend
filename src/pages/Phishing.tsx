@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PhishingResult from "../components/phishing/PhishingResult";
+import { checkPhishing } from "../services/securityService";
 import "../styles/phishing.css";
 
 type Mode = "url" | "message";
@@ -8,25 +9,24 @@ export default function Phishing() {
   const [mode, setMode] = useState<Mode>("url");
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<any>(null);
 
   const handleAnalyze = async () => {
     if (!input) return;
-    setLoading(true);
 
-    // TEMP mock result (replace with API call)
-    setTimeout(() => {
-      setResult({
-        risk: "High",
-        reasons: [
-          "Uses urgency language",
-          "Suspicious domain structure",
-          "Requests sensitive information",
-        ],
-        recommendation: "Do not click the link or respond to the message.",
-      });
+    setLoading(true);
+    setError(null);
+    setResult(null);
+
+    try {
+      const data = await checkPhishing(mode, input);
+      setResult(data);
+    } catch (err: any) {
+      setError(err.message || "Something went wrong");
+    } finally {
       setLoading(false);
-    }, 800);
+    }
   };
 
   return (
@@ -69,10 +69,17 @@ export default function Phishing() {
         {loading ? "Analyzing..." : "Analyze"}
       </button>
 
+      {error && (
+        <div className="rate-limit">
+          ⚠️ {error}
+        </div>
+      )}
+
+
       {result && <PhishingResult data={result} />}
 
       <p className="privacy-note">
-        🔒 Content is analyzed in real-time and not stored.
+        🔒 Content is analyzed securely and never stored.
       </p>
     </div>
   );

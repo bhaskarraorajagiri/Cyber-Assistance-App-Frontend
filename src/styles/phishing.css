@@ -95,3 +95,12 @@ textarea {
   font-size: 0.85rem;
   color: var(--text-muted);
 }
+
+.rate-limit {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--warning);
+  padding: 0.8rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}

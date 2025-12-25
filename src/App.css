@@ -8,3 +8,9 @@
   --text-main: #e5e7eb;     /* main text */
   --text-muted: #9ca3af;    /* secondary text */
 }
+
+.danger {
+  color: var(--danger);
+  font-size: 0.9rem;
+  margin-top: 0.8rem;
+}

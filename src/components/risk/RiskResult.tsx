@@ -1,26 +1,28 @@
 type Props = {
   data: {
-    score: number;
-    level: "Low" | "Medium" | "High";
+    riskScore: number;
+    riskLevel: "Low" | "Medium" | "High";
     issues: string[];
-    recommendations: string[];
+    suggestions: string[];
   };
   onReset: () => void;
 };
 
 export default function RiskResult({ data, onReset }: Props) {
   let color = "var(--accent)";
-  if (data.level === "Medium") color = "var(--warning)";
-  if (data.level === "High") color = "var(--danger)";
+  if (data.riskLevel === "Medium") color = "var(--warning)";
+  if (data.riskLevel === "High") color = "var(--danger)";
 
   return (
     <div className="risk-result">
       <h2>
-        Your Risk Score:{" "}
-        <span style={{ color }}>{data.score}</span>/100
+        Risk Score:{" "}
+        <span style={{ color }}>{data.riskScore}</span>/100
       </h2>
+
       <p className="risk-level">
-        Risk Level: <strong style={{ color }}>{data.level}</strong>
+        Risk Level:{" "}
+        <strong style={{ color }}>{data.riskLevel}</strong>
       </p>
 
       <h3>Identified Issues</h3>
@@ -30,10 +32,10 @@ export default function RiskResult({ data, onReset }: Props) {
         ))}
       </ul>
 
-      <h3>Recommendations</h3>
+      <h3>Recommended Actions</h3>
       <ul>
-        {data.recommendations.map((rec, i) => (
-          <li key={i}>{rec}</li>
+        {data.suggestions.map((tip, i) => (
+          <li key={i}>{tip}</li>
         ))}
       </ul>
 
