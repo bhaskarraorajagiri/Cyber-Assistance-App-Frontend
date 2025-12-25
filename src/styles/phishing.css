@@ -1,0 +1,97 @@
+.phishing-page {
+  max-width: 600px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+}
+
+.phishing-page h1 {
+  text-align: center;
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+/* Mode toggle */
+.mode-toggle {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.mode-toggle button {
+  padding: 0.6rem 1.2rem;
+  background: var(--bg-card);
+  border: 1px solid #1f2937;
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+.mode-toggle button:first-child {
+  border-radius: 8px 0 0 8px;
+}
+
+.mode-toggle button:last-child {
+  border-radius: 0 8px 8px 0;
+}
+
+.mode-toggle .active {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* Input */
+textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 0.8rem;
+  background: var(--bg-card);
+  border: 1px solid #1f2937;
+  border-radius: 8px;
+  color: var(--text-main);
+  resize: vertical;
+}
+
+/* Analyze button */
+.analyze-btn {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: var(--primary);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.analyze-btn:disabled {
+  opacity: 0.7;
+}
+
+/* Result */
+.phishing-result {
+  margin-top: 2rem;
+  padding: 1.2rem;
+  background: var(--bg-card);
+  border-radius: 12px;
+}
+
+.phishing-result ul {
+  padding-left: 1.2rem;
+}
+
+.recommendation {
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+/* Privacy note */
+.privacy-note {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}

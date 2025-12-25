@@ -1,0 +1,89 @@
+.risk-page {
+  max-width: 640px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+}
+
+.risk-page h1 {
+  text-align: center;
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+/* Questionnaire */
+.questionnaire {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-card);
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.question span {
+  max-width: 70%;
+}
+
+.toggle button {
+  padding: 0.4rem 0.9rem;
+  background: transparent;
+  border: 1px solid #1f2937;
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+.toggle button:first-child {
+  border-radius: 6px 0 0 6px;
+}
+
+.toggle button:last-child {
+  border-radius: 0 6px 6px 0;
+}
+
+.toggle .active {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* Buttons */
+.analyze-btn {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: var(--primary);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.secondary-btn {
+  margin-top: 1.5rem;
+  padding: 0.6rem;
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Result */
+.risk-result {
+  background: var(--bg-card);
+  padding: 1.5rem;
+  border-radius: 14px;
+}
+
+.risk-level {
+  margin-bottom: 1rem;
+}

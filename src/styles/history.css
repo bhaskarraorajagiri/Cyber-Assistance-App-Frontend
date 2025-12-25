@@ -1,0 +1,57 @@
+.history-page {
+  max-width: 700px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+}
+
+.history-page h1 {
+  text-align: center;
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+/* History list */
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* History item */
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-card);
+  padding: 1.2rem;
+  border-radius: 12px;
+}
+
+.history-left h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.history-left p {
+  margin: 0.3rem 0 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.history-right {
+  text-align: right;
+}
+
+.level {
+  font-weight: 700;
+  display: block;
+}
+
+.time {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
