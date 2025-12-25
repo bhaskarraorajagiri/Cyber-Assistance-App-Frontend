@@ -6,7 +6,7 @@ import RiskScore from "./pages/RiskScore";
 import AIAssistant from "./pages/AIAssistant";
 import History from "./pages/History";
 
-import "./app.css";
+import "./App.css";
 
 function App() {
   return (
