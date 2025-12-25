@@ -1,0 +1,10 @@
+:root {
+  --bg-dark: #0b0f1a;        /* background */
+  --bg-card: #12182b;       /* cards */
+  --primary: #4f8cff;       /* main blue */
+  --accent: #22c55e;        /* success / safe */
+  --danger: #ef4444;        /* risk */
+  --warning: #f59e0b;       /* medium risk */
+  --text-main: #e5e7eb;     /* main text */
+  --text-muted: #9ca3af;    /* secondary text */
+}
