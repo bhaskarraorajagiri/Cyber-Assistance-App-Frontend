@@ -55,3 +55,14 @@
   font-size: 0.8rem;
   color: var(--text-muted);
 }
+
+@media (max-width: 640px) {
+  .history-item {
+    padding: 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .history-list {
+    gap: 0.8rem;
+  }
+}

@@ -135,14 +135,40 @@ body {
   border-top: 1px solid #1f2937;
 }
 
-/* RESPONSIVE TWEAKS */
+/* RESPONSIVE TWEAKS 
 
+   MOBILE (≤ 640px) */
 @media (max-width: 640px) {
   .hero h1 {
-    font-size: 1.9rem;
+    font-size: 1.6rem;
+  }
+
+  .hero p {
+    font-size: 0.9rem;
   }
 
   .features {
-    padding: 1.5rem 1rem;
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  .feature-card {
+    padding: 1.2rem;
+  }
+
+  .navbar {
+    padding: 1rem;
+  }
+
+  .nav-right a {
+    margin-left: 0.8rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* TABLET (≤ 1024px) */
+@media (max-width: 1024px) {
+  .features {
+    grid-template-columns: repeat(2, 1fr);
   }
 }

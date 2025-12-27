@@ -104,3 +104,22 @@ textarea {
   margin-top: 1rem;
   font-size: 0.9rem;
 }
+
+@media (max-width: 640px) {
+  .phishing-page {
+    padding: 1rem;
+  }
+
+  .mode-toggle {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  textarea {
+    min-height: 120px;
+  }
+
+  .analyze-btn {
+    width: 100%;
+  }
+}

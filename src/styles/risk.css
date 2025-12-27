@@ -96,3 +96,17 @@
   margin-top: 1rem;
   font-size: 0.9rem;
 }
+
+@media (max-width: 640px) {
+  .risk-form {
+    gap: 1rem;
+  }
+
+  .risk-form label {
+    font-size: 0.9rem;
+  }
+
+  .risk-form button {
+    width: 100%;
+  }
+}
