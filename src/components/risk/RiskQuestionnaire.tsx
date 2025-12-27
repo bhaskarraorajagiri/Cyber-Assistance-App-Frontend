@@ -60,7 +60,12 @@ export default function RiskQuestionnaire({ onResult }: Props) {
         }
       />
 
-      {error && <p className="danger">{error}</p>}
+      {error && (
+        <div className="rate-limit">
+          ⚠️ <span>{error}</span>
+        </div>
+      )}
+
 
       <button
         className="analyze-btn"
