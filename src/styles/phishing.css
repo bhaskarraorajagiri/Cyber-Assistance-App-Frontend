@@ -123,3 +123,11 @@ textarea {
     width: 100%;
   }
 }
+
+.phishing-result li {
+  margin-bottom: 0.6rem;
+}
+
+.phishing-result small {
+  color: var(--text-muted);
+}

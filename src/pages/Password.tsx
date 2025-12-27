@@ -54,7 +54,6 @@ export default function Password() {
           </span>
         </div>
 
-
         <button onClick={handleAnalyze} disabled={loading}>
           {loading ? "Analyzing..." : "Analyze Password"}
         </button>
@@ -66,15 +65,18 @@ export default function Password() {
         </div>
       )}
 
-
       {result && (
         <>
-          <PasswordStrengthBar score={result.local.score} />
+          <PasswordStrengthBar
+            score={result.evaluation.score}
+            strength={result.evaluation.strength}
+          />
+
           <PasswordFeedback
             data={{
               pwnedCount: result.pwnedCount,
-              issues: result.local.issues,
-              suggestions: result.local.suggestions,
+              issues: result.evaluation.issues,
+              suggestions: result.evaluation.suggestions,
             }}
           />
         </>

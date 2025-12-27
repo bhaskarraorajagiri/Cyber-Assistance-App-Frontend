@@ -18,19 +18,27 @@ export default function PasswordFeedback({ data }: Props) {
         <p className="safe">✅ Not found in known breaches</p>
       )}
 
-      <h3>Issues</h3>
-      <ul>
-        {data.issues.map((issue, i) => (
-          <li key={i}>{issue}</li>
-        ))}
-      </ul>
+      {data.issues.length > 0 && (
+        <>
+          <h3>Issues</h3>
+          <ul>
+            {data.issues.map((issue, i) => (
+              <li key={i}>{issue}</li>
+            ))}
+          </ul>
+        </>
+      )}
 
-      <h3>Suggestions</h3>
-      <ul>
-        {data.suggestions.map((tip, i) => (
-          <li key={i}>{tip}</li>
-        ))}
-      </ul>
+      {data.suggestions.length > 0 && (
+        <>
+          <h3>Suggestions</h3>
+          <ul>
+            {data.suggestions.map((tip, i) => (
+              <li key={i}>{tip}</li>
+            ))}
+          </ul>
+        </>
+      )}
     </div>
   );
 }

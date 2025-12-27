@@ -11,6 +11,10 @@ export default function RiskQuestionnaire({ onResult }: Props) {
     enable2FA: true,
     installRandomApps: false,
     updateSoftware: true,
+    publicWifiNoVPN: false,
+    clickUnknownLinks: false,
+    ignoreSecurityAlerts: false,
+    noBackups: false,
   });
 
   const [loading, setLoading] = useState(false);
@@ -47,17 +51,37 @@ export default function RiskQuestionnaire({ onResult }: Props) {
       <Question
         label="Do you install apps from unknown or untrusted sources?"
         value={answers.installRandomApps}
-        onChange={(v) =>
-          setAnswers({ ...answers, installRandomApps: v })
-        }
+        onChange={(v) => setAnswers({ ...answers, installRandomApps: v })}
       />
 
       <Question
         label="Do you regularly update your OS and applications?"
         value={answers.updateSoftware}
-        onChange={(v) =>
-          setAnswers({ ...answers, updateSoftware: v })
-        }
+        onChange={(v) => setAnswers({ ...answers, updateSoftware: v })}
+      />
+
+      <Question
+        label="Do you use public Wi-Fi without a VPN?"
+        value={answers.publicWifiNoVPN}
+        onChange={(v) => setAnswers({ ...answers, publicWifiNoVPN: v })}
+      />
+
+      <Question
+        label="Do you click on unknown or suspicious links?"
+        value={answers.clickUnknownLinks}
+        onChange={(v) => setAnswers({ ...answers, clickUnknownLinks: v })}
+      />
+
+      <Question
+        label="Do you ignore security warnings or alerts?"
+        value={answers.ignoreSecurityAlerts}
+        onChange={(v) => setAnswers({ ...answers, ignoreSecurityAlerts: v })}
+      />
+
+      <Question
+        label="Do you keep no backups of important data?"
+        value={answers.noBackups}
+        onChange={(v) => setAnswers({ ...answers, noBackups: v })}
       />
 
       {error && (
@@ -65,7 +89,6 @@ export default function RiskQuestionnaire({ onResult }: Props) {
           ⚠️ <span>{error}</span>
         </div>
       )}
-
 
       <button
         className="analyze-btn"

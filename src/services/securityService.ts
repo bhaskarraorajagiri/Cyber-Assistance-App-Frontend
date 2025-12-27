@@ -48,21 +48,14 @@ export async function checkPhishing(
 }
 
 
-export async function checkRiskScore(payload: {
-  reusePasswords: boolean;
-  enable2FA: boolean;
-  installRandomApps: boolean;
-  updateSoftware: boolean;
-}) {
+export async function checkRiskScore(payload: any) {
   const res = await fetch(`${BASE_URL}/api/security/risk-score`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
 
-  const body = await res.json();
+  const body = await res.json().catch(() => ({}));
 
   if (!res.ok) {
     const parsed = parseApiError(res, body);

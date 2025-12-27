@@ -1,26 +1,44 @@
+type Indicator = {
+  category: "URL Structure" | "Domain" | "Content" | "Network";
+  name: string;
+  severity: "low" | "medium" | "high";
+  description: string;
+};
+
 type Props = {
   data: {
     riskScore: number;
     riskLevel: "Low" | "Medium" | "High";
-    reasons: string[];
+    verdict: "clean" | "suspicious" | "malicious";
+    confidence: number;
+    indicators: Indicator[];
     suggestions: string[];
-    normalizedUrl?: string;
     extractedDomain?: string;
+    estimatedDomainAge?: "Very New" | "New" | "Established";
   };
 };
 
 export default function PhishingResult({ data }: Props) {
-  let color = "var(--accent)";
-  if (data.riskLevel === "Medium") color = "var(--warning)";
-  if (data.riskLevel === "High") color = "var(--danger)";
+  const verdictColor =
+    data.verdict === "malicious"
+      ? "var(--danger)"
+      : data.verdict === "suspicious"
+      ? "var(--warning)"
+      : "var(--accent)";
 
   return (
     <div className="phishing-result">
       <h3>
-        Risk Level:{" "}
-        <span style={{ color }}>{data.riskLevel}</span>{" "}
+        Verdict:{" "}
+        <span style={{ color: verdictColor }}>
+          {data.verdict.toUpperCase()}
+        </span>{" "}
         ({data.riskScore}/100)
       </h3>
+
+      <p>
+        <strong>Confidence:</strong> {data.confidence}%
+      </p>
 
       {data.extractedDomain && (
         <p>
@@ -28,19 +46,38 @@ export default function PhishingResult({ data }: Props) {
         </p>
       )}
 
-      <h4>Why this is risky</h4>
-      <ul>
-        {data.reasons.map((reason, i) => (
-          <li key={i}>{reason}</li>
-        ))}
-      </ul>
+      {data.estimatedDomainAge && (
+        <p>
+          <strong>Estimated Domain Age:</strong>{" "}
+          {data.estimatedDomainAge}
+        </p>
+      )}
 
-      <h4>Safety Suggestions</h4>
-      <ul>
-        {data.suggestions.map((tip, i) => (
-          <li key={i}>{tip}</li>
-        ))}
-      </ul>
+      {data.indicators.length > 0 && (
+        <>
+          <h4>Detected Indicators</h4>
+          <ul>
+            {data.indicators.map((ind, i) => (
+              <li key={i}>
+                <strong>[{ind.category}]</strong> {ind.name}
+                <br />
+                <small>{ind.description}</small>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+
+      {data.suggestions.length > 0 && (
+        <>
+          <h4>Safety Suggestions</h4>
+          <ul>
+            {data.suggestions.map((tip, i) => (
+              <li key={i}>{tip}</li>
+            ))}
+          </ul>
+        </>
+      )}
     </div>
   );
 }
