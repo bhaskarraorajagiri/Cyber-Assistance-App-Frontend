@@ -14,3 +14,22 @@
   font-size: 0.9rem;
   margin-top: 0.8rem;
 }
+
+/* Global dark theme */
+html, body, #root {
+  background-color: #0b0f1a;
+  color: #e5e7eb;
+  min-height: 100%;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+.loading {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0b0f1a;
+  color: #9ca3af;
+  font-size: 1rem;
+}

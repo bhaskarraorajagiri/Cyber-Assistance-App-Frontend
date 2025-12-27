@@ -1,26 +1,26 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Password from "./pages/Password";
-import Phishing from "./pages/Phishing";
-import RiskScore from "./pages/RiskScore";
-import AIAssistant from "./pages/AIAssistant";
-import History from "./pages/History";
+import "./App.css"
 
-import "./App.css";
-
-function App() {
+const Home = lazy(() => import("./pages/Home"));
+const Password = lazy(() => import("./pages/Password"));
+const Phishing = lazy(() => import("./pages/Phishing"));
+const Risk = lazy(() => import("./pages/RiskScore"));
+const History = lazy(() => import("./pages/History"));
+const AIAssistant = lazy(() => import("./pages/AIAssistant"));
+export default function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/password" element={<Password />} />
-        <Route path="/phishing" element={<Phishing />} />
-        <Route path="/risk-score" element={<RiskScore />} />
-        <Route path="/ai" element={<AIAssistant />} />
-        <Route path="/history" element={<History />} />
-      </Routes>
+      <Suspense fallback={<div className="loading">Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/password" element={<Password />} />
+          <Route path="/phishing" element={<Phishing />} />
+          <Route path="/risk-score" element={<Risk />} />
+          <Route path="/history" element={<History />} />
+          <Route path="/ai" element={<AIAssistant />} />
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 }
-
-export default App;
