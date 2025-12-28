@@ -6,7 +6,6 @@ export default function Navbar() {
       <div className="nav-left">CyberAssist</div>
 
       <div className="nav-right">
-        <NavLink to="/history">History</NavLink>
         <NavLink to="/dashboard">Dashboard</NavLink>
       </div>
     </nav>
