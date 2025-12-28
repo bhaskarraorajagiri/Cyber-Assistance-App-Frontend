@@ -2,6 +2,7 @@ import { useState } from "react";
 import PasswordStrengthBar from "../components/password/PasswordStrengthBar";
 import PasswordFeedback from "../components/password/PasswordFeedback";
 import { checkPassword } from "../services/securityService";
+import ThreatExplanation from "../components/password/ThreatExplanation";
 import "../styles/password.css";
 
 export default function Password() {
@@ -79,6 +80,7 @@ export default function Password() {
               suggestions: result.evaluation.suggestions ?? [],
             }}
           />
+          <ThreatExplanation explanations={result.explanations} />
         </>
       )}
 

@@ -1,54 +1,58 @@
 import { useState } from "react";
 import { checkRiskScore } from "../../services/securityService";
 
+type AnswerValue = boolean | null;
+
 type Props = {
   onResult: (data: any) => void;
 };
 
 export default function RiskQuestionnaire({ onResult }: Props) {
-  // ALL DEFAULT TO "NO"
-  const [answers, setAnswers] = useState({
-    reusePasswords: false,
-    enable2FA: false,
-    installRandomApps: false,
-    updateSoftware: false,
-    publicWifiNoVPN: false,
-    clickUnknownLinks: false,
-    ignoreSecurityAlerts: false,
-    noBackups: false,
+  const [answers, setAnswers] = useState<Record<string, AnswerValue>>({
+    reusePasswords: null,
+    enable2FA: null,
+    installRandomApps: null,
+    updateSoftware: null,
+    publicWifiNoVPN: null,
+    clickUnknownLinks: null,
+    ignoreSecurityAlerts: null,
+    noBackups: null,
   });
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // 🔒 Ensure all questions are answered
+  const allAnswered = Object.values(answers).every(
+    (v) => typeof v === "boolean"
+  );
+
   const handleSubmit = async () => {
+    if (!allAnswered) {
+      setError("Please answer all questions before calculating your risk score.");
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
-    //  NORMALIZED PAYLOAD (true = risky for backend)
-    const payload = {
-      // Identity
-      reusePasswords: answers.reusePasswords,     // yes = risky
-      enable2FA: !answers.enable2FA,              // no = risky
-
-      // Device
-      installRandomApps: answers.installRandomApps, // yes = risky
-      updateSoftware: !answers.updateSoftware,      // no = risky
-
-      // Network
-      publicWifiNoVPN: answers.publicWifiNoVPN,     // yes = risky
-      clickUnknownLinks: answers.clickUnknownLinks, // yes = risky
-
-      // Awareness
-      ignoreSecurityAlerts: answers.ignoreSecurityAlerts, // yes = risky
-      noBackups: answers.noBackups,                        // yes = risky
-    };
-
-    // Optional: keep during testing
-    console.log("FRONTEND RISK PAYLOAD:", payload);
-
     try {
-      const data = await checkRiskScore(payload);
+      // 🔑 Normalization: backend expects true = risky
+      const normalizedPayload = {
+        reusePasswords: answers.reusePasswords as boolean,
+        enable2FA: !(answers.enable2FA as boolean),
+
+        installRandomApps: answers.installRandomApps as boolean,
+        updateSoftware: !(answers.updateSoftware as boolean),
+
+        publicWifiNoVPN: answers.publicWifiNoVPN as boolean,
+        clickUnknownLinks: answers.clickUnknownLinks as boolean,
+
+        ignoreSecurityAlerts: answers.ignoreSecurityAlerts as boolean,
+        noBackups: answers.noBackups as boolean,
+      };
+
+      const data = await checkRiskScore(normalizedPayload);
       onResult(data);
     } catch (err: any) {
       setError(err.message || "Something went wrong");
@@ -98,9 +102,7 @@ export default function RiskQuestionnaire({ onResult }: Props) {
       <Question
         label="Do you ignore security warnings or alerts?"
         value={answers.ignoreSecurityAlerts}
-        onChange={(v) =>
-          setAnswers({ ...answers, ignoreSecurityAlerts: v })
-        }
+        onChange={(v) => setAnswers({ ...answers, ignoreSecurityAlerts: v })}
       />
 
       <Question
@@ -118,13 +120,21 @@ export default function RiskQuestionnaire({ onResult }: Props) {
       <button
         className="analyze-btn"
         onClick={handleSubmit}
-        disabled={loading}
+        disabled={loading || !allAnswered}
       >
         {loading ? "Calculating..." : "Calculate Risk Score"}
       </button>
+
+      {!allAnswered && (
+        <p className="privacy-note">
+          ⚠️ Please answer all questions to get an accurate risk score.
+        </p>
+      )}
     </div>
   );
 }
+
+/* ---------- Question Component ---------- */
 
 function Question({
   label,
@@ -132,7 +142,7 @@ function Question({
   onChange,
 }: {
   label: string;
-  value: boolean;
+  value: AnswerValue;
   onChange: (v: boolean) => void;
 }) {
   return (
@@ -140,13 +150,13 @@ function Question({
       <span>{label}</span>
       <div className="toggle">
         <button
-          className={!value ? "active" : ""}
+          className={value === false ? "active" : ""}
           onClick={() => onChange(false)}
         >
           No
         </button>
         <button
-          className={value ? "active" : ""}
+          className={value === true ? "active" : ""}
           onClick={() => onChange(true)}
         >
           Yes

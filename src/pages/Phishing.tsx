@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PhishingResult from "../components/phishing/PhishingResult";
 import { checkPhishing } from "../services/securityService";
+import ThreatExplanation from "../components/phishing/ThreatExplanation";
 import "../styles/phishing.css";
 
 type Mode = "url" | "message";
@@ -76,7 +77,12 @@ export default function Phishing() {
       )}
 
 
-      {result && <PhishingResult data={result} />}
+      {result && (
+        <>
+          <PhishingResult data={result} />
+          <ThreatExplanation explanations={result.explanations} />
+        </>
+      )}
 
       <p className="privacy-note">
         🔒 Content is analyzed securely and never stored.

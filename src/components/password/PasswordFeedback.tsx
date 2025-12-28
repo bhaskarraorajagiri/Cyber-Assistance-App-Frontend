@@ -1,7 +1,12 @@
+type PasswordIssue = {
+  id: string;
+  message: string;
+};
+
 type Props = {
   data: {
     pwnedCount: number;
-    issues: string[];
+    issues: PasswordIssue[];
     suggestions: string[];
   };
 };
@@ -10,6 +15,7 @@ export default function PasswordFeedback({ data }: Props) {
   return (
     <div className="feedback">
       <h3>Breach Status</h3>
+
       {data.pwnedCount > 0 ? (
         <p className="danger">
           ⚠ Found in {data.pwnedCount} known data breaches
@@ -23,7 +29,7 @@ export default function PasswordFeedback({ data }: Props) {
           <h3>Issues</h3>
           <ul>
             {data.issues.map((issue, i) => (
-              <li key={i}>{issue}</li>
+              <li key={i}>{issue.message}</li>
             ))}
           </ul>
         </>

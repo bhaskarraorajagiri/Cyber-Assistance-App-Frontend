@@ -1,9 +1,22 @@
+import RiskExplanation from "./RiskExplanation";
+
+type RiskIssue = {
+  id: string;
+  message: string;
+};
+
 type Props = {
   data: {
     riskScore: number;
     riskLevel: "Low" | "Medium" | "High";
-    issues: string[];
+    issues: RiskIssue[];
     suggestions: string[];
+    explanations?: {
+      title: string;
+      whyItMatters: string;
+      nextSteps: string[];
+      severity: "low" | "medium" | "high";
+    }[];
   };
   onReset: () => void;
 };
@@ -25,19 +38,32 @@ export default function RiskResult({ data, onReset }: Props) {
         <strong style={{ color }}>{data.riskLevel}</strong>
       </p>
 
-      <h3>Identified Issues</h3>
-      <ul>
-        {data.issues.map((issue, i) => (
-          <li key={i}>{issue}</li>
-        ))}
-      </ul>
+      {data.issues.length > 0 && (
+        <>
+          <h3>Identified Issues</h3>
+          <ul>
+            {data.issues.map((issue, i) => (
+              <li key={i}>{issue.message}</li>
+            ))}
+          </ul>
+        </>
+      )}
 
-      <h3>Recommended Actions</h3>
-      <ul>
-        {data.suggestions.map((tip, i) => (
-          <li key={i}>{tip}</li>
-        ))}
-      </ul>
+      {data.suggestions.length > 0 && (
+        <>
+          <h3>Recommended Actions</h3>
+          <ul>
+            {data.suggestions.map((tip, i) => (
+              <li key={i}>{tip}</li>
+            ))}
+          </ul>
+        </>
+      )}
+
+      {/* Threat Explanation Layer */}
+      {data.explanations && (
+        <RiskExplanation explanations={data.explanations} />
+      )}
 
       <button className="secondary-btn" onClick={onReset}>
         Recalculate
