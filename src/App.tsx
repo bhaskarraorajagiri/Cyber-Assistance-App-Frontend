@@ -17,6 +17,7 @@ const Phishing = lazy(() => import("./pages/Phishing"));
 const RiskScore = lazy(() => import("./pages/RiskScore"));
 const History = lazy(() => import("./pages/History"));
 const AIAssistant = lazy(() => import("./pages/AIAssistant"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 /* -------- Page Wrapper for Animations -------- */
@@ -91,6 +92,15 @@ function AnimatedRoutes() {
           element={
             <PageWrapper>
               <AIAssistant />
+            </PageWrapper>
+          }
+        />
+
+        <Route
+          path="/dashboard"
+          element={
+            <PageWrapper>
+              <Dashboard />
             </PageWrapper>
           }
         />
