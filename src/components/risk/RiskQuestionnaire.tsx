@@ -25,7 +25,26 @@ export default function RiskQuestionnaire({ onResult }: Props) {
     setError(null);
 
     try {
-      const data = await checkRiskScore(answers);
+      // 🔑 NORMALIZATION: backend expects true = risky
+      const normalizedPayload = {
+        // Identity
+        reusePasswords: answers.reusePasswords,      // yes = risky
+        enable2FA: !answers.enable2FA,               // no = risky
+
+        // Device
+        installRandomApps: answers.installRandomApps, // yes = risky
+        updateSoftware: !answers.updateSoftware,     // no = risky
+
+        // Network
+        publicWifiNoVPN: answers.publicWifiNoVPN,     // yes = risky
+        clickUnknownLinks: answers.clickUnknownLinks, // yes = risky
+
+        // Awareness
+        ignoreSecurityAlerts: answers.ignoreSecurityAlerts, // yes = risky
+        noBackups: answers.noBackups,                        // yes = risky
+      };
+
+      const data = await checkRiskScore(normalizedPayload);
       onResult(data);
     } catch (err: any) {
       setError(err.message || "Something went wrong");

@@ -65,7 +65,7 @@ export default function Password() {
         </div>
       )}
 
-      {result && (
+      {result && result.evaluation && (
         <>
           <PasswordStrengthBar
             score={result.evaluation.score}
@@ -74,13 +74,20 @@ export default function Password() {
 
           <PasswordFeedback
             data={{
-              pwnedCount: result.pwnedCount,
-              issues: result.evaluation.issues,
-              suggestions: result.evaluation.suggestions,
+              pwnedCount: result.pwnedCount ?? 0,
+              issues: result.evaluation.issues ?? [],
+              suggestions: result.evaluation.suggestions ?? [],
             }}
           />
         </>
       )}
+
+      {result && !result.evaluation && (
+        <div className="rate-limit">
+          ⚠️ Unable to evaluate password. Please try again.
+        </div>
+      )}
+
 
       <p className="privacy-note">
         🔒 Passwords are analyzed securely and never stored.

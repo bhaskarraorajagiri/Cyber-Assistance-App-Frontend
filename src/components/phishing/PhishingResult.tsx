@@ -9,8 +9,8 @@ type Props = {
   data: {
     riskScore: number;
     riskLevel: "Low" | "Medium" | "High";
-    verdict: "clean" | "suspicious" | "malicious";
-    confidence: number;
+    verdict?: "clean" | "suspicious" | "malicious";
+    confidence?: number;
     indicators: Indicator[];
     suggestions: string[];
     extractedDomain?: string;
@@ -19,26 +19,32 @@ type Props = {
 };
 
 export default function PhishingResult({ data }: Props) {
+  const verdict = data.verdict ?? "unknown";
+
   const verdictColor =
-    data.verdict === "malicious"
+    verdict === "malicious"
       ? "var(--danger)"
-      : data.verdict === "suspicious"
+      : verdict === "suspicious"
       ? "var(--warning)"
-      : "var(--accent)";
+      : verdict === "clean"
+      ? "var(--accent)"
+      : "var(--text-muted)";
 
   return (
     <div className="phishing-result">
       <h3>
         Verdict:{" "}
         <span style={{ color: verdictColor }}>
-          {data.verdict.toUpperCase()}
+          {verdict.toUpperCase()}
         </span>{" "}
         ({data.riskScore}/100)
       </h3>
 
-      <p>
-        <strong>Confidence:</strong> {data.confidence}%
-      </p>
+      {typeof data.confidence === "number" && (
+        <p>
+          <strong>Confidence:</strong> {data.confidence}%
+        </p>
+      )}
 
       {data.extractedDomain && (
         <p>
@@ -48,14 +54,14 @@ export default function PhishingResult({ data }: Props) {
 
       {data.estimatedDomainAge && (
         <p>
-          <strong>Estimated Domain Age:</strong>{" "}
+          <strong>Domain Reputation:</strong>{" "}
           {data.estimatedDomainAge}
         </p>
       )}
 
-      {data.indicators.length > 0 && (
+      {data.indicators?.length > 0 && (
         <>
-          <h4>Detected Indicators</h4>
+          <h4>What we found</h4>
           <ul>
             {data.indicators.map((ind, i) => (
               <li key={i}>
@@ -68,7 +74,7 @@ export default function PhishingResult({ data }: Props) {
         </>
       )}
 
-      {data.suggestions.length > 0 && (
+      {data.suggestions?.length > 0 && (
         <>
           <h4>Safety Suggestions</h4>
           <ul>
