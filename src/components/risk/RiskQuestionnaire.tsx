@@ -6,11 +6,12 @@ type Props = {
 };
 
 export default function RiskQuestionnaire({ onResult }: Props) {
+  // ALL DEFAULT TO "NO"
   const [answers, setAnswers] = useState({
     reusePasswords: false,
-    enable2FA: true,
+    enable2FA: false,
     installRandomApps: false,
-    updateSoftware: true,
+    updateSoftware: false,
     publicWifiNoVPN: false,
     clickUnknownLinks: false,
     ignoreSecurityAlerts: false,
@@ -24,27 +25,30 @@ export default function RiskQuestionnaire({ onResult }: Props) {
     setLoading(true);
     setError(null);
 
+    //  NORMALIZED PAYLOAD (true = risky for backend)
+    const payload = {
+      // Identity
+      reusePasswords: answers.reusePasswords,     // yes = risky
+      enable2FA: !answers.enable2FA,              // no = risky
+
+      // Device
+      installRandomApps: answers.installRandomApps, // yes = risky
+      updateSoftware: !answers.updateSoftware,      // no = risky
+
+      // Network
+      publicWifiNoVPN: answers.publicWifiNoVPN,     // yes = risky
+      clickUnknownLinks: answers.clickUnknownLinks, // yes = risky
+
+      // Awareness
+      ignoreSecurityAlerts: answers.ignoreSecurityAlerts, // yes = risky
+      noBackups: answers.noBackups,                        // yes = risky
+    };
+
+    // Optional: keep during testing
+    console.log("FRONTEND RISK PAYLOAD:", payload);
+
     try {
-      // 🔑 NORMALIZATION: backend expects true = risky
-      const normalizedPayload = {
-        // Identity
-        reusePasswords: answers.reusePasswords,      // yes = risky
-        enable2FA: !answers.enable2FA,               // no = risky
-
-        // Device
-        installRandomApps: answers.installRandomApps, // yes = risky
-        updateSoftware: !answers.updateSoftware,     // no = risky
-
-        // Network
-        publicWifiNoVPN: answers.publicWifiNoVPN,     // yes = risky
-        clickUnknownLinks: answers.clickUnknownLinks, // yes = risky
-
-        // Awareness
-        ignoreSecurityAlerts: answers.ignoreSecurityAlerts, // yes = risky
-        noBackups: answers.noBackups,                        // yes = risky
-      };
-
-      const data = await checkRiskScore(normalizedPayload);
+      const data = await checkRiskScore(payload);
       onResult(data);
     } catch (err: any) {
       setError(err.message || "Something went wrong");
@@ -94,7 +98,9 @@ export default function RiskQuestionnaire({ onResult }: Props) {
       <Question
         label="Do you ignore security warnings or alerts?"
         value={answers.ignoreSecurityAlerts}
-        onChange={(v) => setAnswers({ ...answers, ignoreSecurityAlerts: v })}
+        onChange={(v) =>
+          setAnswers({ ...answers, ignoreSecurityAlerts: v })
+        }
       />
 
       <Question
